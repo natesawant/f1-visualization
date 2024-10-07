@@ -8,6 +8,8 @@ df = pd.read_csv(
 
 app = Dash()
 
+server = app.server
+
 app.layout = [
     html.H1(children="F1 Visualizations", style={"textAlign": "center"}),
     html.Div(
