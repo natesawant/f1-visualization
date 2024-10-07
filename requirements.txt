@@ -2,3 +2,4 @@ fastf1
 ipykernel
 dash
 pandas
+gunicorn
