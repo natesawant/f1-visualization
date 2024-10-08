@@ -23,3 +23,11 @@ pip -r install requirements.txt
 ```bash
 python app.py
 ```
+
+## Deployment
+
+### Heroku Deployment
+
+```bash
+git push heroku main
+```

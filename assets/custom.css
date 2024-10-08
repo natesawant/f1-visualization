@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Formula1";
+  src: url("fonts/Formula1-Regular.otf");
+}
+
+@font-face {
+  font-family: "Formula1-Title";
+  src: url("fonts/Formula1-Bold.otf");
+}
+
+html {
+  background-color: black;
+}
+
+h1 {
+  font-family: "Formula1-Title";
+}
+
+* {
+  font-family: "Formula1";
+}
+
+.rc-slider-mark-text {
+  font-family: "Formula1";
+  color: white;
+}
+
+.rc-slider-tooltip-inner {
+  font-family: "Formula1";
+  background-color: #ff1e00;
+  user-select: none;
+}
+
+.rc-slider-track {
+  background-color: #ff1e00;
+}
+
+.main-header {
+  textalign: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 64px;
+}
