@@ -1,19 +1,13 @@
 from functools import cache
 from dash import Dash, html, dcc, callback, Output, Input, dash_table
-import plotly.express as px
-import pandas as pd
 
 import fastf1
-from fastf1 import plotting
+
+from graphs import position_changes
 
 app = Dash()
 
 server = app.server
-
-df = pd.read_csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv"
-)
-
 
 app.layout = [
     html.Div(
@@ -71,8 +65,16 @@ app.layout = [
             html.Div(
                 [
                     dcc.Dropdown(id="gp-dropdown"),
+                    dcc.Dropdown(
+                        id="graph-type",
+                        options=[
+                            "Position Changes",
+                            "Speed Over Race",
+                            "Fastest Lap Speeds",
+                        ],
+                    ),
                     dcc.Loading(
-                        dcc.Graph(id="gp-graph"),
+                        dcc.Graph(id="gp-graph"), type="circle", color="#ff1e00"
                     ),
                 ],
                 style={
@@ -110,45 +112,7 @@ def update_schedule(value):
     ],
 )
 def update_gp(value, year):
-    print(value, year)
-    event = fastf1.get_event(year, value)
-    session = event.get_race()
-    session.load(telemetry=False, weather=False)
-
-    df = pd.DataFrame()
-    colors = {}
-
-    try:
-        laps = session.laps
-    except:
-        return
-
-    for drv in session.drivers:
-        drv_laps = laps.pick_driver(drv)
-
-        abb = drv_laps["Driver"].iloc[0]
-        colors[abb] = plotting.get_driver_color(abb, session)
-
-        # df["LapNumber"] = drv_laps["LapNumber"].to_numpy()
-        df[abb] = pd.Series(drv_laps["Position"].to_numpy())
-
-        # ax.plot(drv_laps["LapNumber"], drv_laps["Position"], label=abb, color=color)
-
-    df["LapNumber"] = df.index
-
-    fig = px.line(
-        df,
-        x="LapNumber",
-        y=df.columns,
-        color_discrete_map=colors,
-        title=f"Position Changes During {value}",
-    )
-
-    fig.update_layout(
-        font_color="rgba(255,255,255,255)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-    )
+    fig = position_changes(year, value)
 
     return fig
 
